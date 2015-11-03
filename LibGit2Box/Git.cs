@@ -31,7 +31,7 @@
             using (var repository = new LibGit2Sharp.Repository(file.DirectoryName))
             {
                 repository.Stage(file.FullName);
-                Log.Add("Staged");
+                Log.Add($"Staged: {file.Name}");
             }
         }
 
@@ -42,10 +42,11 @@
                 try
                 {
                     var status = repository.RetrieveStatus(file.FullName);
-                    Log.Add($"FileStatus: {status}");
+
                     switch (status)
                     {
                         case FileStatus.Unaltered:
+                            Log.Add($"Commit, FileStatus: {status}");
                             return;
                         case FileStatus.Nonexistent:
                         case FileStatus.Added:
@@ -60,7 +61,7 @@
                         case FileStatus.RenamedInWorkDir:
                             {
                                 var commit = repository.Commit("Update", CommitOptions);
-                                Log.Add(commit.Message);
+                                Log.Add($"Commit: {commit.Message}");
                                 break;
                             }
                         case FileStatus.Unreadable:
@@ -74,6 +75,15 @@
                 {
                     Log.Add(e.Message);
                 }
+            }
+        }
+
+        public static void Revert(FileInfo file)
+        {
+            using (var repository = new LibGit2Sharp.Repository(file.DirectoryName))
+            {
+                repository.CheckoutPaths("master", new[] { file.FullName }, new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force });
+                Log.Add($"Revert: {file.Name}");
             }
         }
     }

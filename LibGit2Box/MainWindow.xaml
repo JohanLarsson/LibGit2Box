@@ -13,10 +13,16 @@
     </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Command="{Binding SaveCommand}" Header="Save" />
-            <MenuItem Command="{Binding InitRepositoryCommand}" Header="Init" />
-            <MenuItem Command="{Binding StageCommand}" Header="Stage" />
-            <MenuItem Command="{Binding CommitCommand}" Header="Commit" />
+            <MenuItem Header="File">
+                <MenuItem Command="{Binding SaveCommand}" Header="Save" />
+                <MenuItem Command="{Binding DeleteCommand}" Header="Delete" />
+            </MenuItem>
+            <MenuItem Header="Git">
+                <MenuItem Command="{Binding InitRepositoryCommand}" Header="Init" />
+                <MenuItem Command="{Binding StageCommand}" Header="Stage" />
+                <MenuItem Command="{Binding CommitCommand}" Header="Commit" />
+                <MenuItem Command="{Binding RevertCommand}" Header="Revert" />
+            </MenuItem>
         </Menu>
         <UniformGrid Columns="1">
             <GroupBox Header="File">
